@@ -206,8 +206,55 @@
 
 
 
-//Part 6
-//add aditional  and spacedata + dislikes from the JSON
+// //Part 7
+// //add aditional  and spacedata + dislikes from the JSON
+// var pageCounter = 1;
+// var btn = document.getElementById("btn")
+// var animalContainer = document.getElementById("animal-info")
+
+// btn.addEventListener("click", function () {
+//     var ourRequest = new XMLHttpRequest();
+//     ourRequest.open('GET', 'https://learnwebcode.github.io/json-example/animals-' + pageCounter + '.json')
+//     ourRequest.onload = function () {
+//         var ourData = JSON.parse(ourRequest.responseText);
+//         renderHTML(ourData)
+//     };
+
+//     ourRequest.send();
+//     pageCounter++;
+//     if (pageCounter > 3){
+//         btn.classList.add("hide-me");
+//     }
+// })
+// function renderHTML(data){
+// var htmlString = ""
+// for(i = 0; i < data.length; i++){
+//     htmlString += "<h1>" + data[i].name + " is a " + data[i].species + " that likes to eat ";
+//     for (ii = 0; ii < data[i].foods.likes.length; ii++){
+//         if (ii == 0){
+//             htmlString += data[i].foods.likes[ii];
+//         }else {
+//             htmlString += " and " + data[i].foods.likes[ii];
+//         }
+//     }
+//     //add dislikes
+//     htmlString += ' and dislikes '
+//     for (ii = 0; ii < data[i].foods.dislikes.length; ii++){
+//         if (ii == 0){
+//             htmlString += data[i].foods.dislikes[ii];
+//         }else {
+//             htmlString += " and " + data[i].foods.dislikes[ii];
+//         }
+//     }
+//      htmlString += ".</h1>";
+// }
+//  animalContainer.insertAdjacentHTML('beforeend', htmlString )
+// }
+
+
+
+//Part 8
+//Error handling
 var pageCounter = 1;
 var btn = document.getElementById("btn")
 var animalContainer = document.getElementById("animal-info")
@@ -216,9 +263,23 @@ btn.addEventListener("click", function () {
     var ourRequest = new XMLHttpRequest();
     ourRequest.open('GET', 'https://learnwebcode.github.io/json-example/animals-' + pageCounter + '.json')
     ourRequest.onload = function () {
-        var ourData = JSON.parse(ourRequest.responseText);
-        renderHTML(ourData)
+        // to deal with connection errors
+        if (ourRequest.status >= 200 && ourRequest.status < 400){
+            var ourData = JSON.parse(ourRequest.responseText);
+            renderHTML(ourData)
+        } else {
+            console.log("connected but server error")
+        }
+       
     };
+
+    // for internet down or connection connection error
+    ourRequest.onerror = function(){
+        console.log("Data is down, try again later")
+    }
+
+
+
     ourRequest.send();
     pageCounter++;
     if (pageCounter > 3){
